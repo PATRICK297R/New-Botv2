@@ -1,0 +1,11 @@
+let fetch = require('node-fetch')
+let handler = async (m, { conn }) => {
+m.reply(wait)
+  let res = await (await fetch('https://hardianto.xyz/api/anime/random?sfw=neko&apikey=hardianto')).buffer()
+  conn.sendFile(m.chat, res, 'neko.jpg', `_*Random Neko*_`, m)
+}
+handler.help = ['neko']
+handler.tags = ['internet']
+handler.command = /^neko$/i
+
+module.exports = handler

@@ -1,0 +1,19 @@
+const { MessageType } = require('@adiwajshing/baileys')
+const { sticker } = require('../lib/sticker')
+let fetch = require('node-fetch')
+let handler = async (m, { conn, text }) => {
+let [emoji1, emoji2] = text.split `+`
+if (!emoji1) throw `Contoh .emojimix 🤨+😱`
+if (!emoji2) throw `Contoh .emojimix 🤨+😱`
+m.reply(wait)
+let res = await (await fetch(`https://api.lolhuman.xyz/api/emojimix/${emoji1}+${emoji2}?apikey=patricksus`)).buffer()
+let stiker = await sticker(res, false, global.packname, global.author)
+await conn.sendMessage(m.chat, stiker, MessageType.sticker, {
+      quoted: m
+    })
+}
+handler.tags = ['tools', 'sticker']
+handler.help = ['emojimix emoji1+emoji2']
+handler.command = /^emojimix$/i
+
+module.exports = handler

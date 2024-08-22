@@ -1,0 +1,16 @@
+let fetch = require('node-fetch')
+let handler = async (m, { conn, args }) => {
+   response = args.join(' ').split('|')
+  if (!args[0]) throw 'Masukkan Parameter'
+  m.reply('Proses...')
+  let res = `https://api.lolhuman.xyz/api/textprome/greenneon?apikey=b324162c28e112108ff1887c&text=${response[0]}`
+  conn.sendFile(m.chat, res, 'greenneon.jpg', `Sudah Jadi`, m, false)
+}
+handler.help = ['greenneon'].map(v => v + ' <text>')
+handler.tags = ['nulis']
+handler.command = /^(greenneon)$/i
+handler.register = true
+
+handler.limit = true
+
+module.exports = handler

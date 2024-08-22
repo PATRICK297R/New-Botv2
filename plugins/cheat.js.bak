@@ -1,0 +1,12 @@
+let handler  = async (m, { conn, command, args, usedPrefix, isOwner, DevMode }) => {
+m.reply(`Awokwok Cheat dah dihapus😝😝😝😝😝😝`)
+}
+
+handler.help = ['cheat <jumlah>', 'cheat <jumlah> @user']
+handler.tags = ['owner']
+handler.register = false
+handler.owner = true
+handler.command = /^(cheat)$/i
+handler.fail = null
+
+module.exports = handler

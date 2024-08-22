@@ -1,0 +1,76 @@
+let pajak = 0.02
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+    let fail = `perintah ini buat ngasih limit ke pengguna lain\n\ncontoh:\n${usedPrefix + command} @6285157336614 10\natau balas pesan doi dengan perintah: ${usedPrefix + command} 10`
+    let me = m.sender
+    let who
+    if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted.sender
+    else who = m.chat
+    if (!who) {
+        conn.reply(m.chat, fail, m, { contextInfo: { mentionedJid: ['6285157336614@s.whatsapp.net'] } })
+        throw false
+    }
+    if (typeof global.db.data.users[who] == "undefined") {
+        global.db.data.users[who] = {
+            exp: 0,
+            limit: 10,
+            lastclaim: 0,
+            registered: false,
+            name: conn.getName(m.sender),
+            age: -1,
+            regTime: -1,
+            afk: -1,
+            afkReason: '',
+            banned: false,
+            level: 0,
+            call: 0,
+            role: 'Warrior V',
+            autolevelup: false,
+            pc: 0,
+        }
+    }
+    let txt = text.replace('@' + who.split`@`[0], '').trim()
+    if (!txt) {
+        conn.reply(m.chat, fail, m, { contextInfo: { mentionedJid: ['6285157336614@s.whatsapp.net'] } })
+        throw false
+    }
+    if (isNaN(txt)) throw 'Hanya angka'
+    let poin = parseInt(txt)
+    let limit = poin
+    let pjk = Math.ceil(poin * pajak)
+    limit += pjk
+    let gagal = `
+     *[ TRANSFER LIMIT ]*
+
+*FROM* : @${me.replace(/@.+/, '')}
+*TO* : @${who.replace(/@.+/, '')}
+*JUMLAH* : ${poin}
+*PAJAK* : 2%
+*TOTAL* : ${limit}
+
+*STATUS* : GAGAL
+*Alasan* : Karena Exp tidak Mencukupi, ada pajaknya juga
+`.trim()
+    if (limit < 1) throw gagal
+    let users = global.db.data.users
+    if (limit > users[m.sender].limit) return conn.fakeReply(m.chat, gagal, '0@s.whatsapp.net', `GAGAL`, 'status@broadcast')
+    users[m.sender].limit -= limit
+    users[who].limit += poin
+    let str = `
+   *[ TRANSFER LIMIT ]*
+
+*FROM* : @${me.replace(/@.+/, '')}
+*TO* : @${who.replace(/@.+/, '')}
+*JUMLAH* : ${poin}
+*PAJAK* : 2%
+*TOTAL* : ${limit}
+
+*STATUS* : BERHASIL
+`.trim()
+    conn.fakeReply(m.chat, str, '0@s.whatsapp.net', `BERHASIL`, 'status@broadcast')
+    conn.fakeReply(m.chat, `+${poin} Limit`, who, m.text)
+}
+handler.help = ['paylimit @user <jumlah>']
+handler.tags = ['xp']
+handler.command = /^payl(imit)?$/
+
+module.exports = handler

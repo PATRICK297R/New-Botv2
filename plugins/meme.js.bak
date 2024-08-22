@@ -1,0 +1,11 @@
+let fetch = require('node-fetch')
+let handler = async (m, { conn }) => {
+    let url = await (await fetch('https://api.lolhuman.xyz/api/meme/memeindo?apikey=patricksus')).buffer()
+await conn.sendButtonImg(m.chat, url, 'Meme', watermark, 'Meme', '.meme', m)
+}
+handler.help = ['meme', 'image']
+handler.tags = ['internet']
+handler.command = /^(meme)$/i
+handler.limit = true
+
+module.exports = handler

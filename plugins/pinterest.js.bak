@@ -1,0 +1,13 @@
+let fetch = require('node-fetch')
+let handler = async (m, { conn, text }) => {
+if (!text) throw `Cari apa?`
+m.reply(wait)
+let res = await (await fetch(`https://hardianto.xyz/api/search/pinterest?query=${text}&apikey=hardianto`)).json()
+let json = res[Math.floor(Math.random() * res.length)]
+conn.sendFile(m.chat, json, 'pin.jpg', `Image Url: ${json}`, m)
+}
+handler.help = ['pinterest <pencarian>']
+handler.tags = ['internet']
+handler.command = /^(pin|pinterest)$/i
+
+module.exports = handler

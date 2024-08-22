@@ -1,0 +1,16 @@
+//Jangan Di Hapus Tapi kalo Di tambah Boleh
+
+let fetch = require('node-fetch')
+let handler = async (m, { conn }) => await conn.send2ButtonLoc(m.chat, await (await fetch(thumbfoto)).buffer(), `
+┌〔 BuyPremium〕5K
+├ Pulsa: 085735980188
+├ Pulsa: 085815212637
+├ Dana: 085735980188
+└────
+Jangan Lupa Kirim Bukti Pembayaran Ke Owner
+`.trim(), watermark, 'SCAN DANA', '.scandana', 'OWNER', '.owner', m)
+handler.help = ['belipremium']
+handler.tags = ['info']
+handler.command = /^beli(prem|premium)$/i
+
+module.exports = handler

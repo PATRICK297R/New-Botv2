@@ -1,0 +1,16 @@
+let fetch = require('node-fetch')
+let handler = async (m, { conn, args }) => {
+   response = args.join(' ').split('|')
+  if (!args[0]) throw 'Masukkan Parameter'
+  m.reply('proses..')
+  let res = `https://hardianto.xyz/api/bot/gfx5?apikey=hardianto&text=${response[0]}`
+  conn.sendFile(m.chat, res, 'gfx3.jpg', `Nih kak`, m, false)
+}
+handler.help = ['logorem'].map(v => v + ' <text>')
+handler.tags = ['nulis']
+handler.command = /^(logorem|remlogo)$/i
+handler.register = true
+
+handler.limit = true
+
+module.exports = handler

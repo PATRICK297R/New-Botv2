@@ -1,0 +1,20 @@
+let fetch = require('node-fetch')
+const uploadImage = require('../lib/uploadImage')
+let handler = async (m, { conn, text }) => {
+let [text1, text2] = text.split `|`
+if (!text1) throw `Balas gambar dengan perintah .colong Lol|Human`
+if (!text2) throw `Balas gambar dengan perintah .swm Lol|Human`
+let q = m.quoted ? m.quoted : m
+let mime = (q.msg || q).mimetype || ''
+if (!mime) throw `Balas gambar dengan perintah .swm Lol|Human`
+if (!/image\/(jpe?g|png|!mp4|!gif)/.test(mime)) throw `_*Mime ${mime} tidak di dukung!*_`
+let img = await q.download()
+let url = await uploadImage(img)
+let res = await (await fetch(`https://api.lolhuman.xyz/api/convert/towebpauthor?apikey=patricksus&img=${url}&package=${text1}&author=${text2}`)).buffer()
+conn.sendFile(m.chat, res, '', '', m)
+}
+handler.tags = ['tools']
+handler.help = ['swm', 'stickerwm']
+handler.command = /^(swm|stickerwm|wm)$/i
+
+module.exports = handler
